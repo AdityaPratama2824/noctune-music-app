@@ -42,7 +42,7 @@ npm run dev
 
 ## Environment Variables
 
-Create a `.env` file inside the `server` folder.
+Create a `.env` file inside the `backend` folder.
 
 ```env
 PORT=5000
