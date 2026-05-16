@@ -3,6 +3,9 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const { connectDB } = require('./config/db');
 const {errorHandler, notFound} = require('../src/middleware/errorMiddleware');
+const authRoutes = require('./routes/authRoutes');
+const { protect } = require('./middleware/authMiddleware');
+
 dotenv.config();
 
 const corsOptions = {
@@ -15,6 +18,8 @@ connectDB();
 
 app.use(express.json());
 app.use(cors(corsOptions));
+
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.send('Noctune Music App is running!');
