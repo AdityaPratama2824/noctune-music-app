@@ -12,19 +12,13 @@ if (!response.data || !response.data.data) {
         throw new AppError('Failed to fetch music data', 500);
     }
 const tracks = response.data.data.map((track) => ({
-        id: track.id,
+        deezerId: track.id,
         title: track.title,
-        duration: track.duration,
+        artist: track.artist.name,
+        album: track.album.title,
+        cover: track.album.cover_medium,
         preview: track.preview,
-        artist: {
-            id: track.artist.id,
-            name: track.artist.name,
-        },
-        album: {
-            id: track.album.id,
-            title: track.album.title,
-            cover: track.album.cover,
-        },
+        duration: track.duration,
     }));
     return res.status(200).json({
         success: true,
@@ -33,6 +27,26 @@ const tracks = response.data.data.map((track) => ({
     });
 });
 
-module.exports = {
-    searchMusic,
-};
+const getTrendingMusic = catchAsync(async (req, res, next) => {
+    const response = await axios.get('https://api.deezer.com/chart/0/tracks');
+if (!response.data || !response.data.data) {
+        throw new AppError('Failed to fetch trending music data', 500);
+    }
+
+    const trendingTracks = response.data.data.map((track) => ({
+        deezerId: track.id,
+        title: track.title,
+        artist: track.artist.name,
+        album: track.album.title,
+        cover: track.album.cover_medium,
+        preview: track.preview,
+        duration: track.duration,
+    }));
+    return res.status(200).json({
+        success: true,
+        results: trendingTracks.length,
+        data: trendingTracks,
+    });
+});
+
+module.exports = { searchMusic, getTrendingMusic };
