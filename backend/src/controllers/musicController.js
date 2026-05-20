@@ -1,6 +1,7 @@
 const axios = require('axios');
 const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/AppError');
+const AppError = require('../utils/AppError');  
+const User = require('../models/User');
 
 const searchMusic = catchAsync(async (req, res, next) => {
     const { q } = req.query;
