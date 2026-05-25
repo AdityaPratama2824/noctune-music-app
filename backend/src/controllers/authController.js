@@ -18,13 +18,13 @@ const register = catchAsync(async (req, res, next) => {
             UserId: user.id,
             email: user.email,
         },
-        process.env.JWT_SECRET || 'noctune_secret', {
+        process.env.JWT_SECRET, {
             expiresIn: '1h',
         },
     );
     
     return res.status(201).json({
-        success: true,
+        status: 'success',
         message: 'Registration successfully',
         data: {
             user: {
@@ -54,12 +54,12 @@ const login = catchAsync(async (req, res, next) => {
             UserId: user.id,
             email: user.email,
         },
-        process.env.JWT_SECRET || 'noctune_secret', {
+        process.env.JWT_SECRET, {
             expiresIn: '1h',
         },
     );
     return res.status(200).json({
-        success: true,
+        status: 'success',
         message: 'Login successfully',
         data: {
             user: {

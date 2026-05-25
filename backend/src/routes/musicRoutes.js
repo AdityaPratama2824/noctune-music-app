@@ -1,10 +1,10 @@
 const express = require('express');
-const { searchMusic, getTrendingMusic } = require('../controllers/musicController');
-const { protect } = require('../middleware/authMiddleware');
 const router = express.Router();
-
-
-router.get('/search', protect, searchMusic);
-router.get('/trending', protect, getTrendingMusic);
-
+const { searchMusic, getTrendingMusic, getRecentSearches, clearRecentSearches } = require('../controllers/musicController');
+const { protect, optionalProtect } = require('../middleware/authMiddleware');
 module.exports = router;
+
+router.get('/search', optionalProtect, searchMusic);
+router.get('/trending', getTrendingMusic);
+router.get('/recent-searches', protect, getRecentSearches);
+router.delete('/recent-searches', protect, clearRecentSearches);

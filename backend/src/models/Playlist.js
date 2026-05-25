@@ -19,39 +19,30 @@ const PlaylistSchema = new mongoose.Schema(
             required: [true, 'Playlist must have an owner (User).'],
         },
 
-        tracks: [
-            {
-                deezerId: {
-                    type: String, 
-                    required: true,
-                },
-                title: {
-                    type: String,
-                    required: true,
-                },
-                artist: {
-                    type: String,
-                    required: true,
-                },
-                album: {
-                    type: String,
-                    required: true,
-                },
-                cover: {
-                    type: String, 
-                },
-                preview: {
-                    type: String, 
-                },
-                duration: {
-                    type: Number, 
-                },
-                addedAt: {
-                    type: Date,
-                    default: Date.now,
-                },
-            },
-        ],
+tracks: [
+    {
+        youtubeId: {
+            type: String,
+            required: [true, 'YouTube ID is required!']
+        },
+        title: {
+            type: String,
+            required: [true, 'Title is required!']
+        },
+        artist: {
+            type: String,
+            required: [true, 'Artist is required!']
+        },
+        thumbnail: {
+            type: String,
+            default: ''
+        },
+        duration: {
+            type: Number,
+            default: 0
+        }
+    }
+]
     },
     {
         timestamps: true,

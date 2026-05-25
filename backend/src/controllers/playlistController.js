@@ -65,17 +65,16 @@ const deletePlaylist = catchAsync(async (req, res, next) => {
 
 const addTrackToPlaylist = catchAsync(async (req, res, next) => {
     const { id } = req.params;
-
-    const { deezerId, title, artist, album, cover, preview, duration } = req.body;
+    const { youtubeId, title, artist, thumbnail, duration } = req.body;
     const playlist = await Playlist.findOne({ _id: id, user: req.user.id });
     if (!playlist) {
         throw new AppError('Playlist not found or you do not have permission to modify it', 404);
     }
-    const isTrackExist = playlist.tracks.find(track => track.deezerId === deezerId);
+    const isTrackExist = playlist.tracks.find(track => track.youtubeId === youtubeId);
     if (isTrackExist) {
         throw new AppError('Track already exists in the playlist', 400);
     }
-    playlist.tracks.push({ deezerId, title, artist, album, cover, preview, duration });
+    playlist.tracks.push({ youtubeId, title, artist, thumbnail, duration });
 
     await playlist.save();
 
@@ -90,20 +89,18 @@ const addTrackToPlaylist = catchAsync(async (req, res, next) => {
 
 
 const removeTrackFromPlaylist = catchAsync(async (req, res, next) => {
-    const { id, deezerId } = req.params;
+    const { id, youtubeId } = req.params;
     const playlist = await Playlist.findOne({ _id: id, user: req.user.id });
     if (!playlist) {
         throw new AppError('Playlist not found or you do not have permission to modify it', 404);
     }
-    const initialLength = playlist.tracks.length;
-
-    playlist.tracks = playlist.tracks.filter(track => track.deezerId.toString() !== deezerId.toString());
+    const initialLength = playlist.tracks.length;   
+    playlist.tracks = playlist.tracks.filter(track => track.youtubeId.toString() !== youtubeId.toString());
     if (playlist.tracks.length === initialLength) {
         throw new AppError('Song not found in the playlist', 404);
     }
 
     await playlist.save();
-
     res.status(200).json({
         status: 'success',
         message: 'Track removed from playlist successfully',

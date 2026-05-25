@@ -20,4 +20,25 @@ const protect = catchAsync(async (req, res, next) => {
         next();
     });
 
-module.exports = { protect };
+    const optionalProtect = catchAsync(async (req, res, next) => {
+        let token;
+        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+            token = req.headers.authorization.split(' ')[1];
+        }
+        if (!token) {
+            return next();
+        }
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'noctune_secret');
+            const CurrentUser = await User.findById(decoded.UserId);
+
+            if (CurrentUser) {
+                req.user = CurrentUser;
+            }
+        } catch (err) {
+            req.user = undefined;
+        }
+            next();
+        });
+
+module.exports = { protect, optionalProtect };

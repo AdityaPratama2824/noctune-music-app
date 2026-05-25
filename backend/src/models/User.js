@@ -24,9 +24,9 @@ password: {
     required: true,
     minlength: 6,   
 },
-recentsSearches: {
-        type: [String], // Array of strings to store recent search queries
-        default: [], // Default to an empty array
+recentSearches: {
+        type: [String],
+        default: [], 
     },
 },
 { timestamps: true }

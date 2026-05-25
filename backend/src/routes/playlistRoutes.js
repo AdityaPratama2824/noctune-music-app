@@ -8,6 +8,6 @@ router.get('/my', protect, getMyPlaylists);
 router.put('/:id', protect, updatePlaylist);
 router.delete('/:id', protect, deletePlaylist);
 router.post('/:id/tracks', protect, addTrackToPlaylist);
-router.delete('/:id/tracks/:deezerId', protect, removeTrackFromPlaylist);
+router.delete('/:id/tracks/:youtubeId', protect, removeTrackFromPlaylist);
 
 module.exports = router;
